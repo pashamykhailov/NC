@@ -7,14 +7,12 @@ let app = express();
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
-
-
-app.use((req, res, next) => {
-  res.render('maintance.hbs', {
-    pageTitle: "Maintance page",
-    currentYear: new Date().getFullYear()
-  });
-});
+// app.use((req, res, next) => {
+//   res.render('maintance.hbs', {
+//     pageTitle: "Maintance page",
+//     currentYear: new Date().getFullYear()
+//   });
+// });
 
 app.get('/', (req, res) => {
   res.render('home.hbs', {
