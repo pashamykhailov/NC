@@ -30,6 +30,14 @@ app.get('/about', (req, res) => {
   });
 });
 
+app.get('/portfolio', (req, res) => {
+  res.render('portfolio.hbs', {
+    pageTitle: "Portfolio page",
+    testPartial: 'Here test partial image',
+    currentYear: new Date().getFullYear()
+  });
+});
+
 app.get('/bad', (req, res) => {
   res.send({
     errorMessage: 'You have an error'
