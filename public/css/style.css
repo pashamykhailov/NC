@@ -1,6 +1,8 @@
 body {
     background: #f8f8f8;
     font-family: SFProText, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .main-heading {
@@ -88,6 +90,43 @@ body {
 
 .tutorial {
     margin-top: 81px;
+    background: #ffffff;
+    padding-left: 7%;
+}
+
+.instagram-section {
+    flex-grow: 2;
+    background-color: rgba(74, 144, 226, 0.08);
+}
+
+.how-to {
+    flex-grow: 3;
+}
+
+.logo > p {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000000;
+}
+
+.copy > p {
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+    color: #000000;
+}
+
+.counter {
+    width: 32px;
+    height: 32px;
+    background-color: #418ef7;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 32px;
+    position: absolute;
 }
 
 
@@ -106,4 +145,24 @@ body {
 
 .align-center {
     align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.right-30 {
+    right: 30%;
+}
+
+.top-20 {
+    top: 20%;
+}
+
+.top-50 {
+    top: calc(50% - 32px/2);
 }
