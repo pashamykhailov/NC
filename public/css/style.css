@@ -290,3 +290,14 @@ body {
         flex-direction: column;
     }
 }
+
+@media screen and (orientation:landscape) {
+    .tutorial {
+        padding-left: 7%;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+}
