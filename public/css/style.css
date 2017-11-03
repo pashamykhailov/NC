@@ -293,7 +293,7 @@ body {
 
 @media screen and (orientation:landscape) {
     .tutorial {
-        padding-left: 7%;
+        padding-left: 0;
         -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
         -webkit-flex-direction: row;
