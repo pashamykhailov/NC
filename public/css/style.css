@@ -272,7 +272,7 @@ body {
     position: relative;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 768px) {
     .download-button > button {
         padding: 15px;
     }
