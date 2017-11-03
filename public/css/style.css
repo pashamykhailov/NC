@@ -38,10 +38,12 @@ body {
 
 .input-field > div {
     margin-top: 8px;
+    width: 80%;
 }
 
 .input-field > div > input {
-    min-width: 200px;
+    max-width: 200px;
+    width: 100%;
     padding: 15px 0 14px 20px;
     border-radius: 28px;
     background-color: #ffffff;
