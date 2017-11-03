@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="54px" viewBox="0 0 14 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-HD" transform="translate(-347.000000, -674.000000)">
+            <g id="Section-2" transform="translate(0.000000, 479.000000)">
+                <g id="Path-2" transform="translate(354.000000, 222.000000) rotate(90.000000) translate(-354.000000, -222.000000) translate(327.000000, 214.000000)">
+                    <path d="M4,8 L52,8" stroke="#0C3038" stroke-width="2"></path>
+                    <path d="M44,13.9193752 L44,2.08062485 L44,2.08062485 C44,1.5283401 44.4477153,1.08062485 45,1.08062485 C45.2270715,1.08062485 45.447382,1.1579056 45.624695,1.29975604 L53.023914,7.21913119 L53.023914,7.21913119 C53.4551759,7.56414074 53.5250973,8.19343311 53.1800878,8.62469505 C53.133956,8.68235975 53.0815787,8.73473705 53.023914,8.78086881 L45.624695,14.700244 L45.624695,14.700244 C45.1934331,15.0452535 44.5641407,14.9753321 44.2191312,14.5440702 C44.0772808,14.3667572 44,14.1464466 44,13.9193752 Z" id="Triangle" fill="#0C3038" fill-rule="evenodd"></path>
+                    <circle id="Oval" fill="#0C3038" fill-rule="evenodd" cx="6" cy="8" r="6"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
