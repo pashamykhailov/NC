@@ -109,7 +109,6 @@ body {
     -webkit-flex-grow: 2;
     -ms-flex-positive: 2;
     flex-grow: 2;
-    background-color: rgba(74, 144, 226, 0.08);
 }
 
 .how-to {
@@ -271,4 +270,19 @@ body {
 
 .position-relative {
     position: relative;
+}
+
+@media (max-width: 425px) {
+    .download-button > button {
+        padding: 15px;
+    }
+
+    .tutorial {
+        padding-left: 0;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
 }
