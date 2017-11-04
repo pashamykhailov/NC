@@ -25,5 +25,7 @@
     link.setAttribute("href", response.result.image_url);
     link.setAttribute("download", 'ninja-copy');
     link.click();
+    save.style.display = 'none';
+    input.value = '';
   });
 })();

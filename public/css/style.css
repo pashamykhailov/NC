@@ -97,7 +97,7 @@ body {
     font-weight: 500;
     text-align: left;
     color: #ffffff;
-    padding: 20px 64px;
+    padding: 0 64px;
     outline: none;
     cursor: pointer;
     border-radius: 28px;
@@ -333,7 +333,7 @@ body {
 
 @media (max-width: 768px) {
     .download-button > button {
-        padding: 15px;
+        padding: 0 15px;
     }
 
     .tutorial {
