@@ -14,11 +14,11 @@ function getRequestInsta(url) {
         reject('error occurs ', error);
       } else if (body.status === 'ZERO_RESULTS') {
         reject('ZERO_RESULTS ');
-      } else if (body.result.image_url) {
+      } else if (body && body.result) {
         console.log('body ',body);
         resolve(body);
       } else  {
-        reject('please check is your url is correct ', url);
+        reject(`please check is your request url is correct "${url}"`);
       }
     });
   });
@@ -31,11 +31,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/get-image', (req, res) => {
-  console.log('req ', req.query);
   getRequestInsta(req.query.url).then((success) => {
-    console.log('result ', success);
     res.send(success);
   }, (error) => {
+    res.status(400);
     res.send(error);
   });
 });
