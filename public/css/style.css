@@ -231,11 +231,17 @@ body {
 
 .image-preview-block {
     cursor: pointer;
-    margin: 5px 10px;
+    margin: 20px;
     text-align: center;
-    min-width: 200px;
-    min-height: 200px;
-    max-width: 200px;
+    -webkit-flex-basis: 25%;
+    -ms-flex-preferred-size: 25%;
+    flex-basis: 25%;
+    max-width: 336px;
+    max-height: 336px;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
 }
 
 .image-preview {
@@ -259,6 +265,7 @@ body {
     text-shadow: 0 1px 0 #000000;
     padding: 10px;
     width: 60%;
+    text-align: center;
 }
 
 /* common classes */
@@ -331,6 +338,17 @@ body {
     display: none;
 }
 
+.video-icon {
+    background: url("../img/video.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+    margin: 10px;
+    right: 0;
+    position: absolute;
+}
+
 @-webkit-keyframes load8 {
     0% {
         -webkit-transform: rotate(0deg);
@@ -354,7 +372,12 @@ body {
 
 
 @media (max-width: 768px) {
-
+    .hide-md {
+        display: none;
+    }
+    .image-preview-block {
+        margin: 8px;
+    }
     .tutorial {
         padding-left: 0;
         -webkit-box-orient: vertical;
