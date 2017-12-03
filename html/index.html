@@ -101,6 +101,9 @@
                     <p>Sorry, this profile is private, we can't download them for now</p>
                 </div>
             </div>
+            <div v-if="endCursor.length > 0" class="d-flex justify-center">
+                <button class="get-button load-more-btn" @click="loadMore">Load more</button>
+            </div>
         </section>
         <section class="tutorial d-flex justify-center">
             <div class="instagram-section">

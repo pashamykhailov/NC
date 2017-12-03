@@ -8,7 +8,8 @@
       previewPostsArray: [],
       currentUser: {},
       stories: [],
-      responseType: ''
+      responseType: '',
+      endCursor: ''
     },
     methods: {
       clearVariables() {
@@ -28,18 +29,26 @@
         let stories = responseResult.stories;
         let previewPostsArray = [];
         let responseType = response.body.type;
+        let endCursor;
 
         if (responseResult.media.items) {
           previewPostsArray = responseResult.media.items;
         } else if (responseResult.media) {
           previewPostsArray.push(responseResult.media);
         }
-        return {
-          currentUser,
-          stories,
-          previewPostsArray,
-          responseType
+        if (response.body.type === 'profile' && responseResult.media
+          && responseResult.media.page_info
+          && responseResult.media.page_info.end_cursor
+          && responseResult.media.page_info.has_next_page) {
+          endCursor = responseResult.media.page_info.end_cursor;
         }
+          return {
+            currentUser,
+            stories,
+            previewPostsArray,
+            responseType,
+            endCursor
+          }
       },
       getAllData() {
         this.clearVariables();
@@ -50,7 +59,8 @@
           this.currentUser = decomposed.currentUser;
           this.stories = decomposed.stories;
           this.previewPostsArray = decomposed.previewPostsArray;
-          this.responseType= decomposed.responseType;
+          this.responseType = decomposed.responseType;
+          this.endCursor = decomposed.endCursor;
         }, (error) => {
           console.log(error);
           this.stopLoader();
@@ -73,12 +83,31 @@
       downloadProfileVideo(image) {
         this.$http.get(`http://api.ninja-miners.com/instagram/${image.code}`)
           .then((success) => {
-          let createATag = document.createElement('a');
-          createATag.href = success.body.result.media.source;
-          createATag.download = '';
-          createATag.click();
+            let createATag = document.createElement('a');
+            createATag.href = success.body.result.media.source;
+            createATag.download = '';
+            createATag.click();
           }, (error) => {
-          console.log('error ', error);
+            console.log('error ', error);
+          });
+      },
+      loadMore() {
+        this.$http
+          .get(`http://api.ninja-miners.com/instagram/profile-photos?profile_id=${this.currentUser.id}&cursor=${this.endCursor}`)
+          .then((success) => {
+          let responseBody = success.body;
+            console.log('success ', responseBody.count);
+            if (responseBody.items && responseBody.items.length > 0) {
+              this.previewPostsArray = this.previewPostsArray.concat(responseBody.items);
+            }
+            if (responseBody.page_info && responseBody.page_info.has_next_page
+            && responseBody.page_info.end_cursor) {
+              this.endCursor = responseBody.page_info.end_cursor;
+            } else {
+              this.endCursor = '';
+            }
+          }, (error) => {
+            console.log('error ', error);
           });
       }
     },
