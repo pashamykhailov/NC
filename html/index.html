@@ -49,7 +49,7 @@
             <div class="d-flex justify-center align-center">
                 <input type="text" v-model="query" placeholder="@username, #hashtag or link">
             </div>
-            <button class="get-button"  @click="getAllPhotos">Get</button>
+            <button class="get-button" @click="getAllData">Get</button>
         </section>
         <section class="outer-preview-wrapper d-flex flex-column align-center">
             <div v-if="loaderStatus" class="loader"></div>
@@ -61,34 +61,43 @@
                 </div>
             </div>
             <div v-if="!loaderStatus" class="d-flex flex-column justify-center content-wrapper">
-                <div class="stories-preview" v-if="stories.length > 0">
+                <div class="stories-preview" v-if="stories && stories.length > 0">
                     <h5>User Stories</h5>
                     <div class="stories-list d-flex">
                         <div v-for="story in stories" class="position-relative">
                             <img :src="story.display_url" alt="story">
-                            <div class="story-hover" @click="downloadSinglePhoto(story.display_url)">
+                            <div class="story-hover" @click="downloadSinglePhoto(story.display_url)"
+                                 v-if="!story.video">
                                 <p>Download</p>
                             </div>
+                            <a :href="story.source_url" download class="story-hover" v-if="story.video">
+                                <p>Download</p>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!privateAccount">
+                <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!currentUser.private">
                     <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
-                        <a :href="image.source" download v-if="image.type === 'GraphVideo'">
-                            <div>
-                                <div v-if="image.video" class="video-icon"></div>
+                        <a :href="image.source" download v-if="image.type === 'GraphVideo' && responseType !== 'profile'">
+                            <div v-if="image.type === 'GraphVideo'">
+                                <div class="video-icon"></div>
                                 <img class="image-preview" :src="image.thumbnail" alt="">
                                 <div class="download hide-md">download</div>
                             </div>
                         </a>
+                        <div v-if="image.type === 'GraphVideo' && responseType === 'profile'"
+                        @click="downloadProfileVideo(image)">
+                            <div class="video-icon"></div>
+                            <img class="image-preview" :src="image.thumbnail" alt="">
+                            <div class="download hide-md">download</div>
+                        </div>
                         <div @click="downloadSinglePhoto(image.source)" v-if="image.type !== 'GraphVideo'">
-                            <div v-if="image.video" class="video-icon"></div>
                             <img class="image-preview" :src="image.thumbnail" alt="">
                             <div class="download hide-md">download</div>
                         </div>
                     </div>
                 </div>
-                <div v-if="privateAccount">
+                <div v-if="currentUser.private">
                     <p>Sorry, this profile is private, we can't download them for now</p>
                 </div>
             </div>

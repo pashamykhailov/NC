@@ -18,7 +18,7 @@ function getRequestInsta(query) {
         console.log('body ',body);
         resolve(body);
       } else  {
-        reject(`please check is your request query is correct "${query}"`);
+        reject(`error ${error}`);
       }
     });
   });

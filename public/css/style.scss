@@ -213,11 +213,22 @@ body {
   max-width: 336px;
   max-height: 336px;
   flex-grow: 1;
+  > a {
+    > div {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  > div {
+    height: 100%;
+    width: 100%;
+  }
+
 }
 
 .image-preview {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .download {
@@ -409,7 +420,7 @@ body {
 }
 
 .video-icon {
-  background: url("../img/video.png");
+  background: url("../img/ic-cam.svg");
   background-size: contain;
   background-repeat: no-repeat;
   height: 20px;
