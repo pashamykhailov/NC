@@ -447,6 +447,7 @@ body {
   }
   .posts-preview-block {
     margin: 3px;
+    flex-basis: calc(33% - 6px);
   }
   .posts-preview-wrapper {
     margin-left: 7px;
