@@ -2,8 +2,8 @@
   let vueApp = new Vue({
     el: '#app',
     data: {
-      // query: '',
-      query: 'pashamykhailov',
+      query: '',
+      // query: 'pashamykhailov',
       loaderStatus: false,
       previewPostsArray: [],
       privateAccount: false,
