@@ -39,33 +39,53 @@
     <!— End Google Tag Manager (noscript) —>
 
     <h3 class="main-heading text-center">ninja-copy</h3>
-    <h2 class="easy-way">An easy way to save photos from Instagram</h2>
+    <h2 class="easy-way">An easy way to save photos and videos </br>
+        from Instagram</h2>
     <main>
         <section class="input-field text-center">
         <span>
-            Enter Instagram Image URL to Download Instagram Image
+            Enter @username, #hashtag or link on instagram post
         </span>
             <div class="d-flex justify-center align-center">
-                <input type="text" v-model="url" placeholder="Paste instagram link here">
-                <button id="download" @click="getAllPhotos">Get</button>
+                <input type="text" v-model="query" placeholder="@username, #hashtag or link">
             </div>
+            <button class="get-button"  @click="getAllPhotos">Get</button>
         </section>
-        <section class="image-preview-wrapper d-flex justify-center">
+        <section class="outer-preview-wrapper d-flex flex-column align-center">
             <div v-if="loaderStatus" class="loader"></div>
-            <div v-if="!loaderStatus" class="d-flex flex-wrap justify-center">
-                <div class="image-preview-block position-relative" v-for="image in previewImageArray"
-                     v-if="!privateAccount">
-                    <a :href="image.source" download v-if="image.video">
-                        <div @click="downloadSinglePhoto(image.source, image.video)">
+            <div class="user-preview-block d-flex align-center" v-if="currentUser.username">
+                <img :src="currentUser.profile_photo" alt="avatar">
+                <div>
+                    <p>{{currentUser.username}}</p>
+                    <p>{{currentUser.biography}}</p>
+                </div>
+            </div>
+            <div v-if="!loaderStatus" class="d-flex flex-column justify-center content-wrapper">
+                <div class="stories-preview" v-if="stories.length > 0">
+                    <h5>User Stories</h5>
+                    <div class="stories-list d-flex">
+                        <div v-for="story in stories" class="position-relative">
+                            <img :src="story.display_url" alt="story">
+                            <div class="story-hover" @click="downloadSinglePhoto(story.display_url)">
+                                <p>Download</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!privateAccount">
+                    <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
+                        <a :href="image.source" download v-if="image.type === 'GraphVideo'">
+                            <div>
+                                <div v-if="image.video" class="video-icon"></div>
+                                <img class="image-preview" :src="image.thumbnail" alt="">
+                                <div class="download hide-md">download</div>
+                            </div>
+                        </a>
+                        <div @click="downloadSinglePhoto(image.source)" v-if="image.type !== 'GraphVideo'">
                             <div v-if="image.video" class="video-icon"></div>
                             <img class="image-preview" :src="image.thumbnail" alt="">
                             <div class="download hide-md">download</div>
                         </div>
-                    </a>
-                    <div @click="downloadSinglePhoto(image.source, image.video)" v-if="!image.video">
-                        <div v-if="image.video" class="video-icon"></div>
-                        <img class="image-preview" :src="image.thumbnail" alt="">
-                        <div class="download hide-md">download</div>
                     </div>
                 </div>
                 <div v-if="privateAccount">

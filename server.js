@@ -4,10 +4,10 @@ const path = require('path');
 const request = require('request');
 
 let app = express();
-function getRequestInsta(url) {
+function getRequestInsta(query) {
   return new Promise((resolve, reject) => {
     request({
-      url: `http://api.ninja-miners.com/instagram?url=${url}`,
+      url: `http://api.ninja-miners.com/instagram?query=${query}`,
       json: true
     }, (error, response, body) => {
       if (error) {
@@ -18,7 +18,7 @@ function getRequestInsta(url) {
         console.log('body ',body);
         resolve(body);
       } else  {
-        reject(`please check is your request url is correct "${url}"`);
+        reject(`please check is your request query is correct "${query}"`);
       }
     });
   });
@@ -30,8 +30,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/html/index.html'))
 });
 
-app.get('/get-image', (req, res) => {
-  getRequestInsta(req.query.url).then((success) => {
+app.get('/get-data', (req, res) => {
+  getRequestInsta(req.query.query).then((success) => {
     res.send(success);
   }, (error) => {
     res.status(400);
