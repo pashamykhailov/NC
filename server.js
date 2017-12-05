@@ -4,6 +4,7 @@ const path = require('path');
 const request = require('request');
 
 let app = express();
+
 function getRequestInsta(query) {
   return new Promise((resolve, reject) => {
     request({
@@ -15,9 +16,9 @@ function getRequestInsta(query) {
       } else if (body.status === 'ZERO_RESULTS') {
         reject('ZERO_RESULTS ');
       } else if (body && body.result) {
-        console.log('body ',body);
+        console.log('body ', body);
         resolve(body);
-      } else  {
+      } else {
         reject(`error ${error}`);
       }
     });

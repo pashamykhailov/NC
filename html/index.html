@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
 <head>
 
-    <!— Google Tag Manager —>
-    <script>(function (w, d, s, l, i) {
+  <!— Google Tag Manager —>
+  <script>
+    (function(w, d, s, l, i) {
       w[l] = w[l] || [];
       w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js';
       });
       var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
       j.async = true;
       j.src =
         'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
       f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-MQGNCKJ');</script>
-    <!— End Google Tag Manager —>
+    })(window, document, 'script', 'dataLayer', 'GTM-MQGNCKJ');
+  </script>
+  <!— End Google Tag Manager —>
 
 
-    <base href="/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ninja-copy | Instagram Photo & Video Downloader</title>
-    <meta name="description"
-          content="How to save photos from instagram? Easiest and free way to download Instagram photos and videos to your Android/iOS Phone, PC or Mac">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ninja-copy | Instagram Photo & Video Downloader</title>
+  <meta name="description" content="How to save photos from instagram? Easiest and free way to download Instagram photos and videos to your Android/iOS Phone, PC or Mac">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../public/css/style.css">
 </head>
+
 <body>
-<div id="app" v-cloak>
+  <div id="app" v-cloak>
 
     <!— Google Tag Manager (noscript) —>
     <noscript>
@@ -42,113 +46,112 @@
     <h2 class="easy-way">An easy way to save photos and videos </br>
         from Instagram</h2>
     <main>
-        <section class="input-field text-center">
+      <section class="input-field text-center">
         <span>
             Enter @username, #hashtag or link on instagram post
         </span>
-            <div class="d-flex justify-center align-center">
-                <input type="text" v-model="query" placeholder="@username, #hashtag or link">
+        <div class="d-flex justify-center align-center">
+          <input type="text" v-model="query" placeholder="@username, #hashtag or link">
+        </div>
+        <button class="get-button" @click="getAllData">Get</button>
+      </section>
+      <section class="outer-preview-wrapper d-flex flex-column align-center">
+        <div v-if="loaderStatus" class="loader"></div>
+        <div class="user-preview-block d-flex align-center" v-if="currentUser.username">
+          <img :src="currentUser.profile_photo" alt="avatar">
+          <div>
+            <p>{{currentUser.username}}</p>
+            <p>{{currentUser.biography}}</p>
+          </div>
+        </div>
+        <div v-if="!loaderStatus" class="d-flex flex-column justify-center content-wrapper">
+          <div class="stories-preview" v-if="stories && stories.length > 0">
+            <h5>User Stories</h5>
+            <div class="stories-list d-flex">
+              <div v-for="story in stories" class="position-relative">
+                <img :src="story.display_url" alt="story">
+                <div class="story-hover" @click="downloadSinglePhoto(story.display_url)" v-if="!story.video">
+                  <p>Download</p>
+                </div>
+                <a :href="story.source_url" download class="story-hover" v-if="story.video">
+                  <p>Download</p>
+                </a>
+              </div>
             </div>
-            <button class="get-button" @click="getAllData">Get</button>
-        </section>
-        <section class="outer-preview-wrapper d-flex flex-column align-center">
-            <div v-if="loaderStatus" class="loader"></div>
-            <div class="user-preview-block d-flex align-center" v-if="currentUser.username">
-                <img :src="currentUser.profile_photo" alt="avatar">
-                <div>
-                    <p>{{currentUser.username}}</p>
-                    <p>{{currentUser.biography}}</p>
+          </div>
+          <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!currentUser.private">
+            <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
+              <a :href="image.source" download v-if="image.type === 'GraphVideo' && responseType !== 'profile'">
+                <div v-if="image.type === 'GraphVideo'">
+                  <div class="video-icon"></div>
+                  <img class="image-preview" :src="image.thumbnail" alt="">
+                  <div class="download hide-md">download</div>
                 </div>
+              </a>
+              <div v-if="image.type === 'GraphVideo' && responseType === 'profile'" @click="downloadProfileVideo(image)">
+                <div class="video-icon"></div>
+                <img class="image-preview" :src="image.thumbnail" alt="">
+                <div class="download hide-md">download</div>
+              </div>
+              <div @click="downloadSinglePhoto(image.source)" v-if="image.type !== 'GraphVideo'">
+                <img class="image-preview" :src="image.thumbnail" alt="">
+                <div class="download hide-md">download</div>
+              </div>
             </div>
-            <div v-if="!loaderStatus" class="d-flex flex-column justify-center content-wrapper">
-                <div class="stories-preview" v-if="stories && stories.length > 0">
-                    <h5>User Stories</h5>
-                    <div class="stories-list d-flex">
-                        <div v-for="story in stories" class="position-relative">
-                            <img :src="story.display_url" alt="story">
-                            <div class="story-hover" @click="downloadSinglePhoto(story.display_url)"
-                                 v-if="!story.video">
-                                <p>Download</p>
-                            </div>
-                            <a :href="story.source_url" download class="story-hover" v-if="story.video">
-                                <p>Download</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!currentUser.private">
-                    <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
-                        <a :href="image.source" download v-if="image.type === 'GraphVideo' && responseType !== 'profile'">
-                            <div v-if="image.type === 'GraphVideo'">
-                                <div class="video-icon"></div>
-                                <img class="image-preview" :src="image.thumbnail" alt="">
-                                <div class="download hide-md">download</div>
-                            </div>
-                        </a>
-                        <div v-if="image.type === 'GraphVideo' && responseType === 'profile'"
-                        @click="downloadProfileVideo(image)">
-                            <div class="video-icon"></div>
-                            <img class="image-preview" :src="image.thumbnail" alt="">
-                            <div class="download hide-md">download</div>
-                        </div>
-                        <div @click="downloadSinglePhoto(image.source)" v-if="image.type !== 'GraphVideo'">
-                            <img class="image-preview" :src="image.thumbnail" alt="">
-                            <div class="download hide-md">download</div>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="currentUser.private">
-                    <p>Sorry, this profile is private, we can't download them for now</p>
-                </div>
+          </div>
+          <div v-if="currentUser.private">
+            <p>Sorry, this profile is private, we can't download them for now</p>
+          </div>
+        </div>
+        <div v-if="endCursor && endCursor.length > 0" class="d-flex justify-center">
+          <button class="get-button load-more-btn" @click="loadMore">Load more</button>
+        </div>
+      </section>
+      <section class="tutorial d-flex justify-center">
+        <div class="instagram-section">
+          <div class="logo position-relative d-flex align-center flex-column">
+            <p>Instagram</p>
+            <div class="position-relative">
+              <span class="counter">1</span>
+              <img src="/img/Instagram Icon.svg" alt="Instagram logo">
             </div>
-            <div v-if="endCursor.length > 0" class="d-flex justify-center">
-                <button class="get-button load-more-btn" @click="loadMore">Load more</button>
+          </div>
+          <div class="arrow-down">
+            <img src="/img/arrow.svg" alt="jpeg">
+          </div>
+          <div class="copy position-relative d-flex justify-center">
+            <div class="position-relative">
+              <span class="counter">2</span>
+              <p>ninja-copy</p>
             </div>
-        </section>
-        <section class="tutorial d-flex justify-center">
-            <div class="instagram-section">
-                <div class="logo position-relative d-flex align-center flex-column">
-                    <p>Instagram</p>
-                    <div class="position-relative">
-                        <span class="counter">1</span>
-                        <img src="/img/Instagram Icon.svg" alt="Instagram logo">
-                    </div>
-                </div>
-                <div class="arrow-down">
-                    <img src="/img/arrow.svg" alt="jpeg">
-                </div>
-                <div class="copy position-relative d-flex justify-center">
-                    <div class="position-relative">
-                        <span class="counter">2</span>
-                        <p>ninja-copy</p>
-                    </div>
-                </div>
-                <div class="arrow-down">
-                    <img src="/img/arrow.svg" alt="jpeg">
-                </div>
-                <div class="jpeg position-relative d-flex justify-center">
-                    <div class='position-relative'>
-                        <span class="counter">3</span>
-                        <img src="/img/jpeg.svg" alt="jpeg">
-                    </div>
-                </div>
+          </div>
+          <div class="arrow-down">
+            <img src="/img/arrow.svg" alt="jpeg">
+          </div>
+          <div class="jpeg position-relative d-flex justify-center">
+            <div class='position-relative'>
+              <span class="counter">3</span>
+              <img src="/img/jpeg.svg" alt="jpeg">
             </div>
-            <div class="how-to">
-                <h1>
+          </div>
+        </div>
+        <div class="how-to">
+          <h1>
                     How to Download Instagram photos?
                 </h1>
-                <ul>
-                    <li class="d-flex align-center">Copy link to an instagram post</li>
-                    <li class="d-flex align-center">Paste it to ninja-copy.com</li>
-                    <li class="d-flex align-center">Download the actual image!</li>
-                </ul>
-            </div>
-        </section>
+          <ul>
+            <li class="d-flex align-center">Copy link to an instagram post</li>
+            <li class="d-flex align-center">Paste it to ninja-copy.com</li>
+            <li class="d-flex align-center">Download the actual image!</li>
+          </ul>
+        </div>
+      </section>
     </main>
-</div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
-<script src="/js/libs/download.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+  </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+  <script src="/js/libs/download.js" type="text/javascript"></script>
+  <script src="/js/main.js" type="text/javascript"></script>
 </body>
+
 </html>
