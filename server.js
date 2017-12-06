@@ -13,10 +13,6 @@ request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
 });
 }
 
-download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
-console.log('done');
-});
-
 let app = express();
 
 function getRequestInsta(query) {
@@ -55,5 +51,8 @@ app.get('/get-data', (req, res) => {
 });
 
 app.listen(port, () => {
+download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
+  console.log('done');
+  });
   console.log('App running successfully on port:', port);
 });
