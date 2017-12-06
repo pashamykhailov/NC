@@ -6,7 +6,7 @@ const cleanCSS = require('gulp-clean-css');
 gulp.task('sass', function () {
   return gulp.src('./public/css/*.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(prefix('last 4 versions'))
+    .pipe(prefix('last 6 versions'))
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest('./public/css'));
 });
