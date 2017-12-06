@@ -1,6 +1,6 @@
 (function() {
   function detectmob() {
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       return true;
     } else {
       return false;
@@ -128,6 +128,12 @@
     },
     created() {
       this.mobileTablet = detectmob();
+      document.addEventListener('keypress', (e) => {
+        var key = e.which || e.keyCode;
+        if (key === 13) {
+          this.getAllData();
+        }
+      });
       if (window.location.search) {
         let queryStartIndex = window.location.search.indexOf('?q=') + 3;
         this.query = window.location.search.substring(queryStartIndex);

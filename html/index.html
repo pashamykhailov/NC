@@ -25,7 +25,7 @@
 
   <base href="/">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
   <title>Ninja-copy | Instagram Photo & Video Downloader</title>
   <meta name="description" content="How to save photos from instagram? Easiest and free way to download Instagram photos and videos to your Android/iOS Phone, PC or Mac">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -73,11 +73,12 @@
                 <div @click="downloadSinglePhoto(story.source_url)" class="story-hover" v-if="!story.video && !mobileTablet">
                   <p>Download</p>
                 </div>
-                <a :href="story.source_url" download class="story-hover" v-if="!story.video && mobileTablet">
+                <a :href="story.source_url" download class="story-hover-mobile" v-if="!story.video && mobileTablet">
+                </a>
+                <a :href="story.source_url" download class="story-hover" v-if="story.video && !mobileTablet">
                   <p>Download</p>
                 </a>
-                <a :href="story.source_url" download class="story-hover" v-if="story.video">
-                  <p>Download</p>
+                <a :href="story.source_url" download class="story-hover-mobile" v-if="story.video && mobileTablet">
                 </a>
               </div>
             </div>
