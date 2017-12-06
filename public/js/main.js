@@ -1,4 +1,11 @@
-(function () {
+(function() {
+  function detectmob() {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   let vueApp = new Vue({
     el: '#app',
     data: {
@@ -9,7 +16,8 @@
       currentUser: {},
       stories: [],
       responseType: '',
-      endCursor: ''
+      endCursor: '',
+      mobileTablet: ''
     },
     methods: {
       clearVariables() {
@@ -36,19 +44,19 @@
         } else if (responseResult.media) {
           previewPostsArray.push(responseResult.media);
         }
-        if (response.body.type === 'profile' && responseResult.media
-          && responseResult.media.page_info
-          && responseResult.media.page_info.end_cursor
-          && responseResult.media.page_info.has_next_page) {
+        if (response.body.type === 'profile' && responseResult.media &&
+          responseResult.media.page_info &&
+          responseResult.media.page_info.end_cursor &&
+          responseResult.media.page_info.has_next_page) {
           endCursor = responseResult.media.page_info.end_cursor;
         }
-          return {
-            currentUser,
-            stories,
-            previewPostsArray,
-            responseType,
-            endCursor
-          };
+        return {
+          currentUser,
+          stories,
+          previewPostsArray,
+          responseType,
+          endCursor
+        };
       },
       getAllData() {
         this.clearVariables();
@@ -97,13 +105,13 @@
         this.$http
           .get(`http://api.ninja-miners.com/instagram/profile-photos?profile_id=${this.currentUser.id}&cursor=${this.endCursor}`)
           .then((success) => {
-          let responseBody = success.body;
+            let responseBody = success.body;
             console.log('success ', responseBody.count);
             if (responseBody.items && responseBody.items.length > 0) {
               this.previewPostsArray = this.previewPostsArray.concat(responseBody.items);
             }
-            if (responseBody.page_info && responseBody.page_info.has_next_page
-            && responseBody.page_info.end_cursor) {
+            if (responseBody.page_info && responseBody.page_info.has_next_page &&
+              responseBody.page_info.end_cursor) {
               this.endCursor = responseBody.page_info.end_cursor;
             } else {
               this.endCursor = '';
@@ -119,7 +127,7 @@
       }
     },
     created() {
-      console.log('hello world');
+      this.mobileTablet = detectmob();
       if (window.location.search) {
         let queryStartIndex = window.location.search.indexOf('?q=') + 3;
         this.query = window.location.search.substring(queryStartIndex);

@@ -70,9 +70,12 @@
               <div v-for="story in stories" class="position-relative">
                 <img :src="story.display_url" alt="story">
                 <div class="video-icon" v-if='story.video'></div>
-                <div @click="downloadSinglePhoto(story.source_url)" class="story-hover" v-if="!story.video">
+                <div @click="downloadSinglePhoto(story.source_url)" class="story-hover" v-if="!story.video && !mobileTablet">
                   <p>Download</p>
                 </div>
+                <a :href="story.source_url" download class="story-hover" v-if="!story.video && mobileTablet">
+                  <p>Download</p>
+                </a>
                 <a :href="story.source_url" download class="story-hover" v-if="story.video">
                   <p>Download</p>
                 </a>
@@ -93,15 +96,21 @@
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
-              <div @click ='downloadSinglePhoto(image.source)' download v-if="image.type !== 'GraphVideo'">
+              <div @click ='downloadSinglePhoto(image.source)' v-if="image.type !== 'GraphVideo' && !mobileTablet">
                 <!-- <div :href="image.source" download v-if="image.type !== 'GraphVideo'"> -->
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
+              <a :href="image.source" download v-if="image.type !== 'GraphVideo' && mobileTablet">
+                <img class="image-preview" :src="image.thumbnail" alt="">
+                <div class="download hide-md">download</div>
+              </a>
             </div>
           </div>
-          <div v-if="currentUser && currentUser.private">
-            <p>Sorry, this profile is private, we can't download them for now</p>
+          <div class="sorry-message" v-if="currentUser && currentUser.private">
+            <p>Sorry, this profile is private. <br>
+              We can't download media from private accounts for now
+            </p>
           </div>
         </div>
         <div v-if="endCursor && endCursor.length > 0" class="d-flex justify-center">
