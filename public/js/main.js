@@ -48,7 +48,7 @@
             previewPostsArray,
             responseType,
             endCursor
-          }
+          };
       },
       getAllData() {
         this.clearVariables();
@@ -77,7 +77,9 @@
           canvas.width = obj.width;
           canvas.height = obj.height;
           ctx.drawImage(obj, 0, 0);
-          download(canvas.toDataURL(), 'ninja-copy', 'image/jpeg');
+          let splitted = src.split('.');
+          let slen = splitted.length;
+          download(canvas.toDataURL(), `${splitted[slen - 2]}.${splitted[slen - 1]}`, 'image/jpeg');
         };
       },
       downloadProfileVideo(image) {
@@ -117,6 +119,7 @@
       }
     },
     created() {
+      console.log('hello world');
       if (window.location.search) {
         let queryStartIndex = window.location.search.indexOf('?q=') + 3;
         this.query = window.location.search.substring(queryStartIndex);

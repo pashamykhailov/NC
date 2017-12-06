@@ -9,7 +9,7 @@
       w[l] = w[l] || [];
       w[l].push({
         'gtm.start': new Date().getTime(),
-        event: 'gtm.js';
+        event: 'gtm.js'
       });
       var f = d.getElementsByTagName(s)[0],
         j = d.createElement(s),
@@ -29,7 +29,6 @@
   <title>Ninja-copy | Instagram Photo & Video Downloader</title>
   <meta name="description" content="How to save photos from instagram? Easiest and free way to download Instagram photos and videos to your Android/iOS Phone, PC or Mac">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link rel="stylesheet" type="text/css" href="../public/css/style.css">
 </head>
 
 <body>
@@ -57,7 +56,7 @@
       </section>
       <section class="outer-preview-wrapper d-flex flex-column align-center">
         <div v-if="loaderStatus" class="loader"></div>
-        <div class="user-preview-block d-flex align-center" v-if="currentUser.username">
+        <div class="user-preview-block d-flex align-center" v-if="currentUser && currentUser.username">
           <img :src="currentUser.profile_photo" alt="avatar">
           <div>
             <p>{{currentUser.username}}</p>
@@ -70,7 +69,8 @@
             <div class="stories-list d-flex">
               <div v-for="story in stories" class="position-relative">
                 <img :src="story.display_url" alt="story">
-                <div class="story-hover" @click="downloadSinglePhoto(story.display_url)" v-if="!story.video">
+                <div class="video-icon" v-if='story.video'></div>
+                <div @click="downloadSinglePhoto(story.source_url)" class="story-hover" v-if="!story.video">
                   <p>Download</p>
                 </div>
                 <a :href="story.source_url" download class="story-hover" v-if="story.video">
@@ -79,10 +79,10 @@
               </div>
             </div>
           </div>
-          <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="!currentUser.private">
+          <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="currentUser && !currentUser.private">
             <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
               <a :href="image.source" download v-if="image.type === 'GraphVideo' && responseType !== 'profile'">
-                <div v-if="image.type === 'GraphVideo'">
+                <div class="video" v-if="image.type === 'GraphVideo'">
                   <div class="video-icon"></div>
                   <img class="image-preview" :src="image.thumbnail" alt="">
                   <div class="download hide-md">download</div>
@@ -93,13 +93,14 @@
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
-              <div @click="downloadSinglePhoto(image.source)" v-if="image.type !== 'GraphVideo'">
+              <div @click ='downloadSinglePhoto(image.source)' download v-if="image.type !== 'GraphVideo'">
+                <!-- <div :href="image.source" download v-if="image.type !== 'GraphVideo'"> -->
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
             </div>
           </div>
-          <div v-if="currentUser.private">
+          <div v-if="currentUser && currentUser.private">
             <p>Sorry, this profile is private, we can't download them for now</p>
           </div>
         </div>
