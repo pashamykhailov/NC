@@ -71,7 +71,6 @@
           this.previewPostsArray = decomposed.previewPostsArray;
           this.responseType = decomposed.responseType;
           this.endCursor = decomposed.endCursor;
-          console.log('this.previewPostsArray ', this.previewPostsArray);
         }, (error) => {
           console.log(error);
           this.stopLoader();
@@ -90,6 +89,8 @@
           ctx.drawImage(obj, 0, 0);
           let splitted = src.split('.');
           let slen = splitted.length;
+          // canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
+
           download(canvas.toDataURL(), `${splitted[slen - 2]}.${splitted[slen - 1]}`, 'image/jpeg');
         };
       },
@@ -140,7 +141,6 @@
       if (window.location.search) {
         let queryStartIndex = window.location.search.indexOf('?q=') + 3;
         this.query = decodeURIComponent(window.location.search.substring(queryStartIndex));
-        console.log('this query ', this.query);
         this.getAllData();
       }
     }
