@@ -89,13 +89,12 @@
           ctx.drawImage(obj, 0, 0);
           let splitted = src.split('.');
           let slen = splitted.length;
-          // canvas.toDataURL().replace(/^data:image\/(png|jpg);base64,/, "");
 
           download(canvas.toDataURL(), `${splitted[slen - 2]}.${splitted[slen - 1]}`, 'image/jpeg');
         };
       },
       downloadProfileVideo(image) {
-        this.$http.get(`http://api.ninja-miners.com/instagram/${image.code}`)
+        this.$http.get(`https://api.ninja-miners.com/instagram/${image.code}`)
           .then((success) => {
             let createATag = document.createElement('a');
             createATag.href = success.body.result.media.source;
@@ -107,7 +106,7 @@
       },
       loadMore() {
         this.$http
-          .get(`http://api.ninja-miners.com/instagram/profile-photos?profile_id=${this.currentUser.id}&cursor=${this.endCursor}`)
+          .get(`https://api.ninja-miners.com/instagram/profile-photos?profile_id=${this.currentUser.id}&cursor=${this.endCursor}`)
           .then((success) => {
             let responseBody = success.body;
             console.log('success ', responseBody.count);
