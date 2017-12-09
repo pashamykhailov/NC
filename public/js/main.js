@@ -61,7 +61,7 @@
       getAllData() {
         this.clearVariables();
         this.startLoader();
-        this.$http.get(`/get-data?query=${encodeURI(this.query)}`).then((success) => {
+        this.$http.get(`/get-data?query=${encodeURIComponent(this.query)}`).then((success) => {
           this.stopLoader();
           let decomposed = this.decompositionResponse(success);
           this.currentUser = decomposed.currentUser;
