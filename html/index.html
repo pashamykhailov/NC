@@ -5,7 +5,7 @@
 
   <!— Google Tag Manager —>
   <script>
-    (function(w, d, s, l, i) {
+    (function (w, d, s, l, i) {
       w[l] = w[l] || [];
       w[l].push({
         'gtm.start': new Date().getTime(),
@@ -36,18 +36,17 @@
 
     <!— Google Tag Manager (noscript) —>
     <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQGNCKJ"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MQGNCKJ" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!— End Google Tag Manager (noscript) —>
 
     <h3 class="main-heading text-center">ninja-copy</h3>
     <h2 class="easy-way">An easy way to save photos and videos </br>
-        from Instagram</h2>
+      from Instagram</h2>
     <main>
       <section class="input-field text-center">
         <span>
-            Enter @username, #hashtag or link on instagram post
+          Enter @username, #hashtag or link on instagram post
         </span>
         <div class="d-flex justify-center align-center">
           <input type="text" v-model="query" placeholder="@username, #hashtag or link">
@@ -69,7 +68,7 @@
             <div class="stories-list d-flex">
               <div v-for="story in stories" class="position-relative">
                 <img :src="story.display_url" alt="story">
-                <div class="video-icon" v-if='story.video'></div>
+                <div class="video-icon story-icon" v-if='story.video'></div>
                 <div @click="downloadSinglePhoto(story.source_url)" class="story-hover" v-if="!story.video && !mobileTablet">
                   <p>Download</p>
                 </div>
@@ -83,10 +82,23 @@
               </div>
             </div>
           </div>
-          <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="currentUser && !currentUser.private">
+          <div class="d-flex justify-center flex-wrap posts-preview-wrapper" v-if="(previewPostsArray && previewPostsArray.length > 0)  || (currentUser && !currentUser.private)">
             <div class="posts-preview-block position-relative" v-for="image in previewPostsArray">
+              <!-- Sidecar handler -->
+              <div @click='downloadSinglePhoto(image.source)' v-if="image.type === 'GraphSidecar' && !mobileTablet">
+                <div class="sidecar-icon"></div>
+                <img class="image-preview" :src="image.thumbnail" alt="">
+                <div class="download hide-md">download</div>
+              </div>
+              <a :href="image.source" download v-if="image.type === 'GraphSidecar' && mobileTablet">
+                <div class="sidecar-icon"></div>
+                <img class="image-preview" :src="image.thumbnail" alt="">
+                <div class="download hide-md">download</div>
+              </a>
+              <!-- Sidecar handler end -->
+              <!-- Video handler -->
               <a :href="image.source" download v-if="image.type === 'GraphVideo' && responseType !== 'profile'">
-                <div class="video" v-if="image.type === 'GraphVideo'">
+                <div class="video">
                   <div class="video-icon"></div>
                   <img class="image-preview" :src="image.thumbnail" alt="">
                   <div class="download hide-md">download</div>
@@ -97,24 +109,27 @@
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
-              <div @click ='downloadSinglePhoto(image.source)' v-if="image.type !== 'GraphVideo' && !mobileTablet">
+              <!-- Video handler end -->
+              <!-- Image handler -->
+              <div @click='downloadSinglePhoto(image.source)' v-if="image.type === 'GraphImage' && !mobileTablet">
                 <!-- <div :href="image.source" download v-if="image.type !== 'GraphVideo'"> -->
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </div>
-              <a :href="image.source" download v-if="image.type !== 'GraphVideo' && mobileTablet">
+              <a :href="image.source" download v-if="image.type === 'GraphImage' && mobileTablet">
                 <img class="image-preview" :src="image.thumbnail" alt="">
                 <div class="download hide-md">download</div>
               </a>
+              <!-- Image handler end -->
             </div>
           </div>
           <div class="sorry-message" v-if="currentUser && currentUser.private">
-            <p>Sorry, this profile is private. <br>
-              We can't download media from private accounts for now
+            <p>Sorry, this profile is private.
+              <br> We can't download media from private accounts for now
             </p>
           </div>
         </div>
-        <div v-if="endCursor && endCursor.length > 0" class="d-flex justify-center">
+        <div v-if="previewPostsArray && previewPostsArray.length > 0 && endCursor && endCursor.length > 0" class="d-flex justify-center">
           <button class="get-button load-more-btn" @click="loadMore">Load more</button>
         </div>
       </section>
@@ -148,8 +163,8 @@
         </div>
         <div class="how-to">
           <h1>
-                    How to Download Instagram photos?
-                </h1>
+            How to Download Instagram photos?
+          </h1>
           <ul>
             <li class="d-flex align-center">Copy link to an instagram post</li>
             <li class="d-flex align-center">Paste it to ninja-copy.com</li>

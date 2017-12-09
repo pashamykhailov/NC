@@ -8,7 +8,7 @@ let app = express();
 function getRequestInsta(query) {
   return new Promise((resolve, reject) => {
     request({
-      url: `http://api.ninja-miners.com/instagram?query=${query}`,
+      url: `http://api.ninja-miners.com/instagram?query=${encodeURIComponent(query)}`,
       json: true
     }, (error, response, body) => {
       if (error) {
@@ -36,7 +36,8 @@ app.get('/get-data', (req, res) => {
     res.send(success);
   }, (error) => {
     res.status(400);
-    res.send(error);
+    // res.send(error);
+    res.send(req);
   });
 });
 

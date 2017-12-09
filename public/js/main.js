@@ -39,10 +39,12 @@
         let responseType = response.body.type;
         let endCursor;
 
-        if (responseResult.media.items) {
+        if (responseResult.media && responseResult.media.items) {
           previewPostsArray = responseResult.media.items;
         } else if (responseResult.media) {
           previewPostsArray.push(responseResult.media);
+        } else if (responseResult.posts) {
+          previewPostsArray = responseResult.posts; 
         }
         if (response.body.type === 'profile' && responseResult.media &&
           responseResult.media.page_info &&
@@ -69,6 +71,7 @@
           this.previewPostsArray = decomposed.previewPostsArray;
           this.responseType = decomposed.responseType;
           this.endCursor = decomposed.endCursor;
+          console.log('this.previewPostsArray ', this.previewPostsArray);
         }, (error) => {
           console.log(error);
           this.stopLoader();
@@ -123,7 +126,7 @@
     },
     watch: {
       query() {
-        this.query && this.query.length > 0 ? window.history.pushState("", "", `?q=${this.query}`) : window.history.pushState("", "", ``);
+        this.query && this.query.length > 0 ? window.history.pushState("", "", `?q=${encodeURIComponent(this.query)}`) : window.history.pushState("", "", ``);
       }
     },
     created() {
@@ -136,7 +139,8 @@
       });
       if (window.location.search) {
         let queryStartIndex = window.location.search.indexOf('?q=') + 3;
-        this.query = window.location.search.substring(queryStartIndex);
+        this.query = decodeURIComponent(window.location.search.substring(queryStartIndex));
+        console.log('this query ', this.query);
         this.getAllData();
       }
     }
