@@ -1,29 +1,14 @@
 const express = require('express');
 const port = process.env.PORT || 3000;
 const path = require('path');
-const request = require('request');
+const {
+  getRequestInsta,
+  loadMore,
+  defaultPromiseThen,
+  getProfileVideo
+} = require('./js/services/request');
 
 let app = express();
-
-function getRequestInsta(query) {
-  return new Promise((resolve, reject) => {
-    request({
-      url: `https://api.ninja-miners.com/instagram?query=${encodeURIComponent(query)}`,
-      json: true
-    }, (error, response, body) => {
-      if (error) {
-        reject('error occurs ', error);
-      } else if (body.status === 'ZERO_RESULTS') {
-        reject('ZERO_RESULTS ');
-      } else if (body && body.result) {
-        console.log('body ', body);
-        resolve(body);
-      } else {
-        reject(`error ${error}`);
-      }
-    });
-  });
-}
 
 app.use(express.static(__dirname + '/public'));
 
@@ -32,12 +17,18 @@ app.get('/', (req, res) => {
 });
 
 app.get('/get-data', (req, res) => {
-  getRequestInsta(req.query.query).then((success) => {
-    res.send(success);
-  }, (error) => {
-    res.status(400);
-    res.send(error);
-  });
+  getRequestInsta(req.query.query)
+    .then(defaultPromiseThen(res).success, defaultPromiseThen(res).err);
+});
+
+app.get('/load-more', (req, res) => {
+  loadMore(req.query.user_id, req.query.cursor)
+    .then(defaultPromiseThen(res).success, defaultPromiseThen(res).err);
+});
+
+app.get('/get-profile-video', (req, res) => {
+  getProfileVideo(req.query.video_code)
+  .then(defaultPromiseThen(res).success, defaultPromiseThen(res.err));
 });
 
 app.listen(port, () => {

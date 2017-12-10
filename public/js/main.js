@@ -93,8 +93,8 @@
           download(canvas.toDataURL(), `${splitted[slen - 2]}.${splitted[slen - 1]}`, 'image/jpeg');
         };
       },
-      downloadProfileVideo(image) {
-        this.$http.get(`https://api.ninja-miners.com/instagram/${image.code}`)
+      downloadProfileVideo(video) {
+        this.$http.get(`/get-profile-video?video_code=${video.code}`)
           .then((success) => {
             let createATag = document.createElement('a');
             createATag.href = success.body.result.media.source;
@@ -106,10 +106,9 @@
       },
       loadMore() {
         this.$http
-          .get(`https://api.ninja-miners.com/instagram/profile-photos?profile_id=${this.currentUser.id}&cursor=${this.endCursor}`)
+          .get(`/load-more?user_id=${this.currentUser.id}&cursor=${this.endCursor}`)
           .then((success) => {
             let responseBody = success.body;
-            console.log('success ', responseBody.count);
             if (responseBody.items && responseBody.items.length > 0) {
               this.previewPostsArray = this.previewPostsArray.concat(responseBody.items);
             }
