@@ -17,7 +17,8 @@
       stories: [],
       responseType: '',
       endCursor: '',
-      mobileTablet: ''
+      mobileTablet: '',
+      loadMoreStatus: false
     },
     methods: {
       clearVariables() {
@@ -79,7 +80,7 @@
       downloadSinglePhoto(src) {
         let obj;
         let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext('2d');
         obj = new Image();
         obj.setAttribute('crossOrigin', 'anonymous');
         obj.setAttribute('src', src);
@@ -105,6 +106,7 @@
           });
       },
       loadMore() {
+        this.loadMoreStatus = true;
         this.$http
           .get(`/load-more?user_id=${this.currentUser.id}&cursor=${this.endCursor}`)
           .then((success) => {
@@ -118,14 +120,16 @@
             } else {
               this.endCursor = '';
             }
+            this.loadMoreStatus = false;
           }, (error) => {
+            this.loadMoreStatus = false;
             console.log('error ', error);
           });
       }
     },
     watch: {
       query() {
-        this.query && this.query.length > 0 ? window.history.pushState("", "", `?q=${encodeURIComponent(this.query)}`) : window.history.pushState("", "", ``);
+        this.query && this.query.length > 0 ? window.history.pushState('', '', `?q=${encodeURIComponent(this.query)}`) : window.history.pushState("", "", ``);
       }
     },
     created() {

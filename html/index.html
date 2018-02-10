@@ -130,7 +130,8 @@
           </div>
         </div>
         <div v-if="previewPostsArray && previewPostsArray.length > 0 && endCursor && endCursor.length > 0" class="d-flex justify-center">
-          <button class="get-button load-more-btn" @click="loadMore">Load more</button>
+          <button class="get-button load-more-btn" v-if="!loadMoreStatus" @click="loadMore">Load more</button>
+          <span class="loader margin-top-16" v-if="loadMoreStatus"></span>
         </div>
       </section>
       <section class="tutorial d-flex justify-center">
