@@ -64,6 +64,7 @@
       getAllData() {
         this.clearVariables();
         this.startLoader();
+        this.query && this.query.length > 0 ? window.history.pushState('', '', `?q=${encodeURIComponent(this.query)}`) : window.history.pushState('', '', '');
         this.$http.get(`/get-data?query=${encodeURIComponent(this.query)}`).then((success) => {
           this.stopLoader();
           let decomposed = this.decompositionResponse(success);
@@ -125,11 +126,6 @@
             this.loadMoreStatus = false;
             console.log('error ', error);
           });
-      }
-    },
-    watch: {
-      query() {
-        this.query && this.query.length > 0 ? window.history.pushState('', '', `?q=${encodeURIComponent(this.query)}`) : window.history.pushState("", "", ``);
       }
     },
     created() {
